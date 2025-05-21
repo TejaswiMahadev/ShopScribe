@@ -17,15 +17,15 @@ This project is a powerful and intelligent Streamlit-based web application that 
 
 ## 🧠 Technologies Used
 
-**Streamlit** – Web interface
-
-**Firecrawl API** – Website scraping engine
-
-**Google Gemini API ** (via google.generativeai) – Generative AI for JSON structuring
-
-**VADER Sentiment** – NLP-based sentiment scoring
-
-**Pandas / Matplotlib / Seaborn** – Data wrangling & visualization
+- **Streamlit** – Web interface
+  
+- **Firecrawl API** – Website scraping engine
+  
+- **Google Gemini API  (via google.generativeai) ** – Generative AI for JSON structuring
+  
+- **VADER Sentiment** – NLP-based sentiment scoring
+  
+- **Pandas / Matplotlib / Seaborn** – Data wrangling & visualization
 
  ## ✨ Core Functionalities
  - **🔗 Website Crawling** : Dynamically generates search URLs for each platform. Scrapes product listings and individual product pages.
