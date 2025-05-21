@@ -1,0 +1,12 @@
+streamlit
+firecrawl
+python-dotenv
+pandas
+matplotlib
+seaborn
+vaderSentiment
+google-generativeai
+emoji
+dateparser
+
+
