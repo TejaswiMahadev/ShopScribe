@@ -488,7 +488,6 @@ def structure_data_with_gemini(crawl_data, website=None , search_query=None):
         
         if not response or not response.text.strip():
             print("Error: Received empty response from Generative AI.")
-            safe_export_to_excel(crawl_data, website, search_query, is_structured=False)
             return None
             
         response_text = response.text.strip()
@@ -507,8 +506,6 @@ def structure_data_with_gemini(crawl_data, website=None , search_query=None):
                 return [structured_data]
         except json.JSONDecodeError as e:
             print(f"Error parsing JSON: {str(e)}")
-            # Export the partial data
-            safe_export_to_excel(response_text, website, search_query, is_structured=False)
             
             # Try to salvage partial data
             product_matches = re.finditer(r'{[^{}]*}', response_text)
@@ -533,7 +530,6 @@ def structure_data_with_gemini(crawl_data, website=None , search_query=None):
     except Exception as e:
         print(f"Error structuring data: {e}")
         # Export the raw data in case of error
-        safe_export_to_excel(crawl_data, website, search_query, is_structured=False)
         return None
 
 def crawl_product_details(product_url):
@@ -633,81 +629,7 @@ def display_product_details(product_details):
             print(f"{key}: {value}")
     print("-" * 50)
 
-def safe_export_to_excel(data_to_export, website, search_query, is_structured=True):
-    """
-    Safely export any data to Excel, handling partial or malformed data
-    
-    Parameters:
-    data_to_export: Can be dict, list, str, or any other data type
-    website (str): Name of the website
-    search_query (str): Search query used
-    is_structured (bool): Whether the data is already structured
-    
-    Returns:
-    str: Path to the saved Excel file
-    """
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"product_data_{website}_{timestamp}.xlsx"
-    
-    try:
-        # Handle different types of data
-        if isinstance(data_to_export, dict):
-            # For dictionary data
-            df = pd.DataFrame(list(data_to_export.items()), columns=['Property', 'Value'])
-        elif isinstance(data_to_export, list):
-            # For list of dictionaries
-            df = pd.DataFrame(data_to_export)
-        elif isinstance(data_to_export, str):
-            # For string data (like raw JSON or error messages)
-            df = pd.DataFrame({'Raw Data': [data_to_export]})
-        else:
-            # For any other type of data
-            df = pd.DataFrame({'Data': [str(data_to_export)]})
-        
-        # Create Excel writer object
-        with pd.ExcelWriter(filename, engine='openpyxl') as writer:
-            # Write the main data
-            df.to_excel(writer, sheet_name='Product Data', index=False)
-            
-            # Add metadata
-            metadata = pd.DataFrame({
-                'Information': ['Website', 'Search Query', 'Export Date', 'Data Status'],
-                'Value': [
-                    website,
-                    search_query,
-                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    'Structured' if is_structured else 'Raw/Partial'
-                ]
-            })
-            metadata.to_excel(writer, sheet_name='Metadata', index=False)
-            
-            # Auto-adjust column widths
-            for sheet_name in writer.sheets:
-                worksheet = writer.sheets[sheet_name]
-                for column in worksheet.columns:
-                    max_length = 0
-                    column = [cell for cell in column]
-                    for cell in column:
-                        try:
-                            if len(str(cell.value)) > max_length:
-                                max_length = len(str(cell.value))
-                        except:
-                            pass
-                    adjusted_width = (max_length + 2)
-                    worksheet.column_dimensions[column[0].column_letter].width = min(adjusted_width, 50)
-        
-        print(f"\nData exported successfully to {filename}")
-        return filename
-    except Exception as e:
-        print(f"Error during Excel export: {str(e)}")
-        # Last resort: try to save raw data
-        try:
-            with open(f"raw_data_{timestamp}.txt", 'w') as f:
-                f.write(str(data_to_export))
-            print(f"Raw data saved to raw_data_{timestamp}.txt")
-        except:
-            print("Failed to save raw data")
-        return None
+
 
 def parse_reviews(raw_data):
     """Parse review data from raw text."""
