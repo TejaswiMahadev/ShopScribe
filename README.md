@@ -21,7 +21,7 @@ This project is a powerful and intelligent Streamlit-based web application that 
 
 **Firecrawl API** – Website scraping engine
 
-**Google Gemini API **(via google.generativeai) – Generative AI for JSON structuring
+**Google Gemini API ** (via google.generativeai) – Generative AI for JSON structuring
 
 **VADER Sentiment** – NLP-based sentiment scoring
 
