@@ -40,3 +40,27 @@ This project is a powerful and intelligent Streamlit-based web application that 
 
 - **Aspect Analysis**: Uses Gemini to detect product-specific themes like "comfort", "battery life", etc.
 
+## 📦 Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/TejaswiMahadev/ShopScribe.git
+cd ShopScribe
+```
+### 2.  Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+### 3. Set Environment Variables
+
+```bash
+GOOGLE_API_KEY=your_google_gemini_api_key
+FIRECRAWL_API_KEY=your_firecrawl_api_key
+```
+
+
+
+
+
